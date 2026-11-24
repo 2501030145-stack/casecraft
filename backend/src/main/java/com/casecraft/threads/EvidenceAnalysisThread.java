@@ -1,0 +1,3 @@
+package com.casecraft.threads;
+import java.util.*;import java.util.concurrent.Callable;
+public class EvidenceAnalysisThread implements Callable<List<Map<String,Object>>> { private final List<Map<String,Object>> records; public EvidenceAnalysisThread(List<Map<String,Object>> records){this.records=records;} public List<Map<String,Object>> call(){List<Map<String,Object>> out=new ArrayList<>();for(Map<String,Object> e:records)if(!Boolean.TRUE.equals(e.get("verified")))out.add(Map.of("type","UNVERIFIED_EVIDENCE","severity","NOTICE","message","Evidence '"+e.get("title")+"' has not been marked verified."));return out;} }

@@ -1,0 +1,4 @@
+package com.casecraft.model;
+import jakarta.persistence.*; import java.util.UUID;
+@Entity @Table(name="clue_connections",uniqueConstraints=@UniqueConstraint(columnNames={"source_clue_id","target_clue_id"}))
+public class ClueConnection { @Id @GeneratedValue(strategy=GenerationType.UUID) private UUID id; @ManyToOne(fetch=FetchType.LAZY) @JoinColumn(name="source_clue_id",nullable=false) private Clue source; @ManyToOne(fetch=FetchType.LAZY) @JoinColumn(name="target_clue_id",nullable=false) private Clue target; private String relationship="RELATED_TO"; public UUID getId(){return id;} public Clue getSource(){return source;} public void setSource(Clue v){source=v;} public Clue getTarget(){return target;} public void setTarget(Clue v){target=v;} public String getRelationship(){return relationship;} public void setRelationship(String v){relationship=v;} }

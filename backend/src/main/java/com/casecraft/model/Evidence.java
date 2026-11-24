@@ -1,0 +1,9 @@
+package com.casecraft.model;
+import jakarta.persistence.*; import java.time.LocalDateTime; import java.util.UUID; import com.casecraft.interfaces.*;
+@Entity @Table(name="evidence") @Inheritance(strategy=InheritanceType.SINGLE_TABLE) @DiscriminatorColumn(name="evidence_type")
+public abstract class Evidence implements Searchable, Analyzable, Verifiable {
+ @Id @GeneratedValue(strategy=GenerationType.UUID) private UUID id; @ManyToOne(fetch=FetchType.LAZY) @JoinColumn(name="case_id",nullable=false) private CaseFile caseFile;
+ @Column(nullable=false) private String title; @Column(length=2500) private String description; private String category; private String referenceUrl; private LocalDateTime collectedAt=LocalDateTime.now(); private boolean verified;
+ protected Evidence(){} protected Evidence(CaseFile c,String t,String d){caseFile=c;title=t;description=d;}
+ public UUID getId(){return id;} public CaseFile getCaseFile(){return caseFile;} public void setCaseFile(CaseFile c){caseFile=c;} public String getTitle(){return title;} public void setTitle(String v){title=v;} public String getDescription(){return description;} public void setDescription(String v){description=v;} public String getCategory(){return category;} public void setCategory(String v){category=v;} public String getReferenceUrl(){return referenceUrl;} public void setReferenceUrl(String v){referenceUrl=v;} public LocalDateTime getCollectedAt(){return collectedAt;} public boolean isVerified(){return verified;} public void setVerified(boolean v){verified=v;} public abstract String getEvidenceType(); @Override public boolean matches(String query){String q=query==null?"":query.toLowerCase();return title.toLowerCase().contains(q)||(description!=null&&description.toLowerCase().contains(q));} @Override public String analyze(){return title+" ["+getEvidenceType()+"] "+(verified?"verified":"pending verification");} @Override public boolean verify(){return verified;}
+}

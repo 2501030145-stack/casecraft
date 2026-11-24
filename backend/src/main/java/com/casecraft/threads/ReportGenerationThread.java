@@ -1,0 +1,3 @@
+package com.casecraft.threads;
+import java.time.LocalDateTime;import java.util.*;import java.util.concurrent.Callable;
+public class ReportGenerationThread implements Callable<Map<String,Object>> { private final Map<String,Object> data; private final Map<String,Object> analysis; public ReportGenerationThread(Map<String,Object> data,Map<String,Object> analysis){this.data=data;this.analysis=analysis;} public Map<String,Object> call(){Object caseInfo=data.get("case");String title=caseInfo instanceof Map<?,?> m?String.valueOf(m.get("title")):"Investigation";return Map.of("generatedAt",LocalDateTime.now(),"caseData",data,"analysis",analysis,"summary","Investigation report generated for "+title);} }
